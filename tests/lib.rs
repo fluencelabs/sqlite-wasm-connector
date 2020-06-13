@@ -233,14 +233,14 @@ fn statement_bind_with_optional() {
 }
 
 #[test]
-fn statement_count() {
+fn statement_column_count() {
     let connection = setup_users(":memory:");
     let statement = "SELECT * FROM users";
     let mut statement = ok!(connection.prepare(statement));
 
     assert_eq!(ok!(statement.next()), State::Row);
 
-    assert_eq!(statement.count(), 5);
+    assert_eq!(statement.column_count(), 5);
 }
 
 #[test]
