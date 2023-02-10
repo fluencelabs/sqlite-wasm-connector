@@ -36,4 +36,19 @@ mod tests {
     fn test4(test: marine_test_env::test::ModuleInterface) {
         test.test4()
     }
+
+    #[marine_test(config_path = "../Config.toml", modules_dir = "../artifacts/")]
+    fn test5(test: marine_test_env::test::ModuleInterface) {
+        test.test5()
+    }
+
+    #[marine_test(config_path = "../Config.toml", modules_dir = "../artifacts/")]
+    fn test6(test: marine_test_env::test::ModuleInterface) {
+        test.test6()
+    }
+
+    #[marine_test(config_path = "../Config.toml", modules_dir = "../artifacts/")]
+    fn test7(test: marine_test_env::test::ModuleInterface) {
+        test.test7()
+    }
 }
