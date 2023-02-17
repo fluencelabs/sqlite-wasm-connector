@@ -36,4 +36,44 @@ mod tests {
     fn test4(test: marine_test_env::test::ModuleInterface) {
         test.test4()
     }
+
+    #[marine_test(config_path = "../Config.toml", modules_dir = "../artifacts/")]
+    fn test5(test: marine_test_env::test::ModuleInterface) {
+        test.test5()
+    }
+
+    #[marine_test(config_path = "../Config.toml", modules_dir = "../artifacts/")]
+    fn test6(test: marine_test_env::test::ModuleInterface) {
+        test.test6()
+    }
+
+    #[marine_test(config_path = "../Config.toml", modules_dir = "../artifacts/")]
+    fn test7(test: marine_test_env::test::ModuleInterface) {
+        test.test7()
+    }
+
+    #[marine_test(config_path = "../Config.toml", modules_dir = "../artifacts/")]
+    fn test8(test: marine_test_env::test::ModuleInterface) {
+        test.test8()
+    }
+
+    #[marine_test(config_path = "../Config.toml", modules_dir = "../artifacts/")]
+    fn test9(test: marine_test_env::test::ModuleInterface) {
+        test.test9()
+    }
+
+    #[marine_test(config_path = "../Config.toml", modules_dir = "../artifacts/")]
+    fn test10(test: marine_test_env::test::ModuleInterface) {
+        test.test10()
+    }
+
+    #[marine_test(config_path = "../Config.toml", modules_dir = "../artifacts/")]
+    fn test11(test: marine_test_env::test::ModuleInterface) {
+        test.test11()
+    }
+
+    #[marine_test(config_path = "../Config.toml", modules_dir = "../artifacts/")]
+    fn test12(test: marine_test_env::test::ModuleInterface) {
+        test.test12()
+    }
 }
