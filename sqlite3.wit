@@ -32,172 +32,168 @@
  field $function_name: string
  field $json_path: string
 )))   ;; 9
+(@interface type (record $CallParameters (
+ field $init_peer_id: string
+ field $service_id: string
+ field $service_creator_peer_id: string
+ field $host_id: string
+ field $particle_id: string
+ field $tetraplets: array (array (record 9))
+)))   ;; 10
 (@interface type (func
-  (param $stmt_handle: u32 $pos: s32 $value: s64)
-  (result s32)))   ;; 10
-(@interface type (func
-  (param $stmt_handle: u32 $pos: s32 $value: s64)
-  (result s32)))   ;; 11
+  (param $stmt_handle: u32 $icol: u32)
+  (result string)))   ;; 11
 (@interface type (func
   (param $stmt_handle: u32 $icol: u32)
   (result string)))   ;; 12
 (@interface type (func
   (param $stmt_handle: u32 $icol: u32)
-  (result string)))   ;; 13
+  (result s32)))   ;; 13
 (@interface type (func
-  (param $db_handle: u32 $sql: string)
-  (result record 7)))   ;; 14
+  (param $stmt_handle: u32 $icol: u32)
+  (result s32)))   ;; 14
 (@interface type (func
-  (param $db_handle: u32 $sql: string)
-  (result record 7)))   ;; 15
+  (param $db_handle: u32)
+  (result s32)))   ;; 15
 (@interface type (func
   (param $db_handle: u32)
   (result s32)))   ;; 16
 (@interface type (func
-  (param $db_handle: u32)
+  (param $stmt_handle: u32 $pos: s32 $value: f64)
   (result s32)))   ;; 17
 (@interface type (func
   (param $stmt_handle: u32 $pos: s32 $value: f64)
   (result s32)))   ;; 18
 (@interface type (func
-  (param $stmt_handle: u32 $pos: s32 $value: f64)
-  (result s32)))   ;; 19
+  (param $filename: string $flags: s32 $vfs: string)
+  (result record 8)))   ;; 19
 (@interface type (func
   (param $filename: string $flags: s32 $vfs: string)
-  (result record 6)))   ;; 20
+  (result record 8)))   ;; 20
 (@interface type (func
-  (param $filename: string $flags: s32 $vfs: string)
-  (result record 6)))   ;; 21
+  (param $db_handle: u32)
+  (result s32)))   ;; 21
 (@interface type (func
   (param $db_handle: u32)
   (result s32)))   ;; 22
 (@interface type (func
-  (param $db_handle: u32)
+  (param $stmt_handle: u32)
   (result s32)))   ;; 23
 (@interface type (func
   (param $stmt_handle: u32)
   (result s32)))   ;; 24
 (@interface type (func
-  (param $stmt_handle: u32)
-  (result s32)))   ;; 25
+  (param $stmt_handle: u32 $icol: u32)
+  (result s64)))   ;; 25
 (@interface type (func
-  (param $stmt_handle: u32)
-  (result s32)))   ;; 26
+  (param $stmt_handle: u32 $icol: u32)
+  (result s64)))   ;; 26
 (@interface type (func
-  (param $stmt_handle: u32)
+  (param $db: u32)
   (result s32)))   ;; 27
 (@interface type (func
-  (param $size: s64)
-  (result s64)))   ;; 28
-(@interface type (func
-  (param $size: s64)
-  (result s64)))   ;; 29
-(@interface type (func
   (param $db: u32)
-  (result s32)))   ;; 30
+  (result s32)))   ;; 28
 (@interface type (func
-  (param $db: u32)
+  (param $stmt_handle: u32 $icol: s32)
+  (result f64)))   ;; 29
+(@interface type (func
+  (param $stmt_handle: u32 $icol: s32)
+  (result f64)))   ;; 30
+(@interface type (func
+  (param $db_handle: u32 $ms: u32)
   (result s32)))   ;; 31
 (@interface type (func
-  (param $db_handle: u32 $sql: string $callback_id: s32 $callback_arg: s32)
-  (result record 8)))   ;; 32
+  (param $db_handle: u32 $ms: u32)
+  (result s32)))   ;; 32
 (@interface type (func
-  (param $db_handle: u32 $sql: string $callback_id: s32 $callback_arg: s32)
-  (result record 8)))   ;; 33
+  (param $db_handle: u32)
+  (result string)))   ;; 33
 (@interface type (func
-  (param $stmt_handle: u32 $icol: s32)
-  (result f64)))   ;; 34
+  (param $db_handle: u32)
+  (result string)))   ;; 34
 (@interface type (func
-  (param $stmt_handle: u32 $icol: s32)
-  (result f64)))   ;; 35
+  (param $stmt_handle: u32 $pos: s32 $value: s64)
+  (result s32)))   ;; 35
 (@interface type (func
-  (param $stmt_handle: u32 $icol: u32)
+  (param $stmt_handle: u32 $pos: s32 $value: s64)
   (result s32)))   ;; 36
 (@interface type (func
-  (param $stmt_handle: u32 $icol: u32)
+  (param $stmt_handle: u32)
   (result s32)))   ;; 37
 (@interface type (func
-  (param $stmt_handle: u32 $pos: s32)
+  (param $stmt_handle: u32)
   (result s32)))   ;; 38
 (@interface type (func
+  (param $db_handle: u32 $sql: string)
+  (result record 7)))   ;; 39
+(@interface type (func
+  (param $db_handle: u32 $sql: string)
+  (result record 7)))   ;; 40
+(@interface type (func
   (param $stmt_handle: u32 $pos: s32)
-  (result s32)))   ;; 39
-(@interface type (func
-  (param $stmt_handle: u32 $pos: s32 $blob: array (u8) $xDel: s32)
-  (result s32)))   ;; 40
-(@interface type (func
-  (param $stmt_handle: u32 $pos: s32 $blob: array (u8) $xDel: s32)
   (result s32)))   ;; 41
 (@interface type (func
-  (param $db_handle: u32)
+  (param $stmt_handle: u32 $pos: s32)
   (result s32)))   ;; 42
 (@interface type (func
-  (param $db_handle: u32)
+  (param $stmt_handle: u32)
   (result s32)))   ;; 43
 (@interface type (func
   (param $stmt_handle: u32)
   (result s32)))   ;; 44
 (@interface type (func
-  (param $stmt_handle: u32)
+  (param $stmt_handle: u32 $pos: s32 $blob: array (u8) $xDel: s32)
   (result s32)))   ;; 45
 (@interface type (func
-  (param $stmt_handle: u32 $pos: s32 $text: string $xDel: s32)
+  (param $stmt_handle: u32 $pos: s32 $blob: array (u8) $xDel: s32)
   (result s32)))   ;; 46
 (@interface type (func
-  (param $stmt_handle: u32 $pos: s32 $text: string $xDel: s32)
+  (param $db_handle: u32)
   (result s32)))   ;; 47
 (@interface type (func
-  (param $stmt_handle: u32)
+  (param $db_handle: u32)
   (result s32)))   ;; 48
 (@interface type (func
-  (param $stmt_handle: u32)
+  (param $stmt_handle: u32 $pos: s32 $text: string $xDel: s32)
   (result s32)))   ;; 49
 (@interface type (func
-  (param $size: s64)
-  (result s64)))   ;; 50
+  (param $stmt_handle: u32 $pos: s32 $text: string $xDel: s32)
+  (result s32)))   ;; 50
 (@interface type (func
-  (param $size: s64)
-  (result s64)))   ;; 51
+  (param $stmt_handle: u32)
+  (result s32)))   ;; 51
 (@interface type (func
+  (param $stmt_handle: u32)
   (result s32)))   ;; 52
 (@interface type (func
-  (result s32)))   ;; 53
+  (param $db_handle: u32 $sql: string $callback_id: s32 $callback_arg: s32)
+  (result record 6)))   ;; 53
 (@interface type (func
-  (param $stmt_handle: u32 $icol: u32)
-  (result s64)))   ;; 54
+  (param $db_handle: u32 $sql: string $callback_id: s32 $callback_arg: s32)
+  (result record 6)))   ;; 54
 (@interface type (func
-  (param $stmt_handle: u32 $icol: u32)
-  (result s64)))   ;; 55
+  (result s32)))   ;; 55
 (@interface type (func
-  (param $db_handle: u32 $ms: u32)
   (result s32)))   ;; 56
 (@interface type (func
-  (param $db_handle: u32 $ms: u32)
-  (result s32)))   ;; 57
+  (param $stmt_handle: u32 $icol: s32)
+  (result array (u8))))   ;; 57
 (@interface type (func
   (param $stmt_handle: u32 $icol: s32)
   (result array (u8))))   ;; 58
 (@interface type (func
-  (param $stmt_handle: u32 $icol: s32)
-  (result array (u8))))   ;; 59
+  (param $stmt_handle: u32 $N: u32)
+  (result string)))   ;; 59
 (@interface type (func
   (param $stmt_handle: u32 $N: u32)
   (result string)))   ;; 60
 (@interface type (func
-  (param $stmt_handle: u32 $N: u32)
-  (result string)))   ;; 61
+  (param $stmt_handle: u32 $icol: u32)
+  (result s32)))   ;; 61
 (@interface type (func
   (param $stmt_handle: u32 $icol: u32)
   (result s32)))   ;; 62
-(@interface type (func
-  (param $stmt_handle: u32 $icol: u32)
-  (result s32)))   ;; 63
-(@interface type (func
-  (param $db_handle: u32)
-  (result string)))   ;; 64
-(@interface type (func
-  (param $db_handle: u32)
-  (result string)))   ;; 65
 
 
 
