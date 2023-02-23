@@ -135,4 +135,10 @@ extern "C" {
 
     // SQLITE_API int sqlite3_finalize(sqlite3_stmt *pStmt);
     pub fn sqlite3_finalize(stmt_handle: u32) -> i32;
+
+    // sqlite3_int64 sqlite3_soft_heap_limit64(sqlite3_int64 n)
+    pub fn sqlite3_soft_heap_limit64(size: i64) -> i64;
+
+    // sqlite3_int64 sqlite3_hard_heap_limit64(sqlite3_int64 N)
+    pub fn sqlite3_hard_heap_limit64(size: i64) -> i64;
 }
