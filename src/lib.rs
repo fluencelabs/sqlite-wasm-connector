@@ -291,6 +291,14 @@ pub fn version() -> usize {
     unsafe { ffi::sqlite3_libversion_number() as usize }
 }
 
+pub fn set_soft_memory_limit(limit: i64) -> i64 {
+    unsafe { ffi::sqlite3_soft_heap_limit64(limit) }
+}
+
+pub fn set_hard_memory_limit(limit: i64) -> i64 {
+    unsafe { ffi::sqlite3_hard_heap_limit64(limit) }
+}
+
 fn last_error(raw: ffi::Sqlite3DbHandle) -> Option<Error> {
     unsafe {
         let code = ffi::sqlite3_errcode(raw);

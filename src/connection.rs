@@ -55,10 +55,6 @@ impl Connection {
         }
     }
 
-    pub fn set_memory_limit(limit: i64) -> i64 {
-        unsafe { ffi::sqlite3_hard_heap_limit64(limit) }
-    }
-
     /// Execute a statement without processing the resulting rows if any.
     #[inline]
     pub fn execute<T: AsRef<str>>(&self, statement: T) -> Result<()> {

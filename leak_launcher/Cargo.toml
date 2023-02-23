@@ -1,5 +1,5 @@
 [package]
-name = "marine-sqlite-connector"
+name = "leak_launcher"
 version = "0.7.0"
 license = "Apache-2.0/MIT"
 authors = [
@@ -23,25 +23,13 @@ categories = ["api-bindings", "database"]
 keywords = ["database"]
 edition = "2018"
 
-[lib]
-name = "marine_sqlite_connector"
-path = "src/lib.rs"
-
 [[bin]]
-name = "it_generator"
-path = "src/it_generator.rs"
-
-[[bin]]
-name = "leak_test"
-path = "leak_test/main.rs"
-
-[[bin]]
-name = "test"
-path = "src/test.rs"
+name = "leak_launcher"
+path = "main.rs"
 
 [dependencies]
 marine-rs-sdk = "0.7.0"
-
-[dev-dependencies]
-temporary = "0.6"
-marine-rs-sdk-test = "0.8.2"
+fluence-app-service = "0.23.1"
+toml = "0.7.2"
+serde = "1.0.152"
+serde_json = "1.0.93"
