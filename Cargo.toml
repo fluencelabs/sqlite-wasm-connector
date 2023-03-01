@@ -1,6 +1,6 @@
 [package]
 name = "marine-sqlite-connector"
-version = "0.7.0"
+version = "0.8.0"
 license = "Apache-2.0/MIT"
 authors = [
     "Daniel Dulaney <ddy@vitronic.com>",
@@ -37,7 +37,8 @@ path = "src/test.rs"
 
 [dependencies]
 marine-rs-sdk = "0.7.0"
+bytesize = "1.2.0"
 
 [dev-dependencies]
-temporary = "0.6"
 marine-rs-sdk-test = "0.2.0"
+temporary = "0.6"

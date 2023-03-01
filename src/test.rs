@@ -1,5 +1,5 @@
 use marine_rs_sdk::marine;
-use marine_sqlite_connector::{version, State, Value};
+use marine_sqlite_connector::{version, Connection, State, Value};
 
 pub fn main() {}
 
@@ -646,5 +646,42 @@ pub fn test12() {
         assert_eq!(row[2].as_string().unwrap(), "john.doe@sqlitetutorial.net");
         assert_eq!(row[3].as_string().unwrap(), "john.smith@sqlitetutorial.net");
         assert_eq!(row[4].as_string().unwrap(), "UPDATE");
+    }
+}
+
+#[marine]
+pub fn test13() {
+    fn insert_data(connection: &Connection) -> marine_sqlite_connector::Result<()> {
+        connection
+            .execute("INSERT INTO email VALUES ('Alice', 'How deep is the hole', 'Nobody knows')")
+    }
+
+    let connection = marine_sqlite_connector::open(":memory:").unwrap();
+
+    connection
+        .execute(
+            "
+            CREATE TABLE email(sender, subject, body);
+        ",
+        )
+        .unwrap();
+
+    for _ in 0..10 {
+        let insert_result = insert_data(&connection);
+        assert!(insert_result.is_ok());
+    }
+
+    marine_sqlite_connector::set_hard_heap_limit64(bytesize::KB as i64);
+
+    for _ in 0..10 {
+        let insert_result = insert_data(&connection);
+        assert!(insert_result.is_err());
+    }
+
+    marine_sqlite_connector::set_hard_heap_limit64(bytesize::MB as i64);
+
+    for _ in 0..10 {
+        let insert_result = insert_data(&connection);
+        assert!(insert_result.is_ok());
     }
 }
