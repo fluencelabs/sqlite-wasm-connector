@@ -76,4 +76,9 @@ mod tests {
     fn test12(test: marine_test_env::test::ModuleInterface) {
         test.test12()
     }
+
+    #[marine_test(config_path = "../Config.toml", modules_dir = "../artifacts/")]
+    fn test13(test: marine_test_env::test::ModuleInterface) {
+        test.test13()
+    }
 }

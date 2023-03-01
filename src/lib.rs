@@ -314,7 +314,7 @@ fn last_error(raw: ffi::Sqlite3DbHandle) -> Option<Error> {
 /// to stay below the limit, it will exceed the limit rather than generate an SQLITE_NOMEM error.
 /// In other words, the soft heap limit is advisory only.
 pub fn soft_soft_heap_limit64(limit: i64) -> i64 {
-    unsafe { ffi::sqlite3_hard_heap_limit64(limit) }
+    unsafe { ffi::sqlite3_soft_heap_limit64(limit) }
 }
 
 /// From the SQLite docs:
