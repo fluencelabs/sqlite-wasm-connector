@@ -90,7 +90,6 @@ impl Connection {
     /// Create a prepared statement.
     #[inline]
     pub fn prepare<T: AsRef<str>>(&self, statement: T) -> Result<Statement> {
-    pub fn prepare<T: AsRef<str>>(&self, statement: T) -> Result<Statement> {
         crate::statement::new(self.raw, statement)
     }
 
