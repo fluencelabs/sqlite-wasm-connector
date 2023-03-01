@@ -1,10 +1,30 @@
+#![feature(try_blocks)]
+
 use marine_rs_sdk::marine;
 use marine_sqlite_connector::State;
+
+mod schema;
+
+use serde::Serialize;
+use serde::Deserialize;
+use schema::db;
+use fstrings::f;
 
 fn main() {}
 
 #[marine]
-pub fn create(path: String) {
+#[derive(Debug, Clone, Deserialize)]
+#[allow(dead_code)]
+pub struct UnitValue {
+    pub success: bool,
+    pub error: String,
+}
+
+
+#[marine]
+pub fn create_4(path: String) {
+    schema::create();
+    /*
     let conn_create = marine_sqlite_connector::open(&path).expect("Open database connection");
 
     conn_create
@@ -80,6 +100,7 @@ pub fn create(path: String) {
         ",
         )
         .expect("running schema queries");
+     */
 }
 
 #[marine]
@@ -112,6 +133,56 @@ fn insert_2(path: String) {
 }
 
 #[marine]
+fn insert_3() {
+    let conn = db();
+
+    let key = "some";
+    let value = "other";
+    let mut statement = conn
+        .prepare("INSERT OR REPLACE INTO kv (key, string) VALUES (?, ?)")
+        .expect("prep rand 0..3");
+    statement.bind(1, key).expect("bind 1");
+    statement.bind(2, value).expect("bind 2");
+    statement.next().expect("next");
+}
+
+#[marine]
+fn insert_4(key: &str, value: String) {
+    let conn = db();
+
+    let mut statement = conn
+        .prepare("INSERT OR REPLACE INTO kv (key, string) VALUES (?, ?)")
+        .expect("prep rand 0..3");
+    statement.bind(1, key).expect("bind 1");
+    statement.bind(2, value.as_str()).expect("bind 2");
+    statement.next().expect("next");
+}
+
+#[marine]
+fn insert_5(key: &str, value: String) {
+    let mut statement = db().prepare("INSERT OR REPLACE INTO kv (key, string) VALUES (?, ?)")
+        .expect("prep rand 0..3");
+    statement.bind(1, key).expect("bind 1");
+    statement.bind(2, value.as_str()).expect("bind 2");
+    statement.next().expect("next");
+}
+
+/*
+#[marine]
+pub fn list_push_string_5(key: &str, value: String) {
+    let mut statement = db().prepare(
+        r#"
+                INSERT INTO kv (key, string)
+                    VALUES (?, ?)
+            "#,
+    ).unwrap();
+    statement.bind(1, key).unwrap();
+    statement.bind(2, value.as_str()).unwrap();
+    statement.next().unwrap();
+}
+ */
+
+#[marine]
 fn select_1(path: String) {
     let conn = marine_sqlite_connector::open(path).expect("Open database connection");
 
@@ -126,19 +197,170 @@ fn select_1(path: String) {
 }
 
 #[marine]
-fn select_2(path: String) {
+fn select_5(path: String) {
     let conn = marine_sqlite_connector::open(path).expect("Open database connection");
-
-    let mut statement = conn
-        .prepare("SELECT u32 FROM kv WHERE key = ?")
-        .expect("prep rand 8..9");
-    statement.bind(1, 42).expect("8..9 bind");
-    if let State::Row = statement.next().expect("8..9 next") {
-        statement.read::<f64>(0).expect("8..9 read") as u32;
-    }
 }
 
 #[marine]
 fn set_limit(limit: i64) -> i64 {
     marine_sqlite_connector::set_hard_memory_limit(limit)
 }
+
+#[marine]
+pub fn list_push_string_1(key: &str, value: String) -> UnitValue {
+    let result: eyre::Result<()> = try {
+        let mut statement = db().prepare(
+            r#"
+                INSERT INTO kv (key, string, list_index)
+                    VALUES (
+                        ?,
+                        ?,
+                        42
+                    )
+            "#,
+        )?;
+        statement.bind(1, key)?;
+        statement.bind(2, value.as_str())?;
+        //statement.bind(3, key)?;
+        statement.next()?;
+    };
+
+    result.into()
+}
+
+#[marine]
+pub fn list_push_string_2(key: &str, value: String) -> UnitValue {
+        let mut statement = db().prepare(
+            r#"
+                INSERT INTO kv (key, string, list_index)
+                    VALUES (
+                        ?,
+                        ?,
+                        42
+                    )
+            "#,
+        ).unwrap();
+        statement.bind(1, key).unwrap();
+        statement.bind(2, value.as_str()).unwrap();
+        statement.next().unwrap();
+
+    UnitValue::ok()
+}
+
+#[marine]
+pub fn list_push_string_3(key: &str, value: String) {
+    let mut statement = db().prepare(
+        r#"
+                INSERT INTO kv (key, string, list_index)
+                    VALUES (
+                        ?,
+                        ?,
+                        42
+                    )
+            "#,
+    ).unwrap();
+    statement.bind(1, key).unwrap();
+    statement.bind(2, value.as_str()).unwrap();
+    statement.next().unwrap();
+}
+
+#[marine]
+pub fn list_push_string_4(key: &str, value: String) {
+    let mut statement = db().prepare(
+        r#"
+                INSERT INTO kv (key, string)
+                    VALUES (
+                        ?,
+                        ?
+                    )
+            "#,
+    ).unwrap();
+    statement.bind(1, key).unwrap();
+    statement.bind(2, value.as_str()).unwrap();
+    statement.next().unwrap();
+}
+
+#[marine]
+pub fn list_push_string_5(key: &str, value: String) {
+    let mut statement = db().prepare(
+        r#"
+                INSERT INTO kv (key, string)
+                    VALUES (?, ?)
+            "#,
+    ).unwrap();
+    statement.bind(1, key).unwrap();
+    statement.bind(2, value.as_str()).unwrap();
+    statement.next().unwrap();
+}
+
+#[marine]
+pub fn list_push_string_6(key: &str, value: String) {
+    let mut statement = db().prepare(
+        r#"
+                INSERT OR REPLACE INTO kv (key, string)
+                    VALUES (?,?)
+            "#,
+    ).unwrap();
+    statement.bind(1, key).unwrap();
+    statement.bind(2, value.as_str()).unwrap();
+    statement.next().unwrap();
+}
+
+impl UnitValue {
+    pub fn ok() -> Self {
+        Self {
+            success: true,
+            error: String::new(),
+        }
+    }
+
+    pub fn error(error: impl AsRef<str>) -> Self {
+        Self {
+            success: false,
+            error: error.as_ref().to_string(),
+        }
+    }
+
+    pub fn spell_error(error: SpellError) -> Self {
+        Self::error(format_error(error))
+    }
+}
+
+impl From<eyre::Result<()>> for UnitValue {
+    fn from(value: eyre::Result<()>) -> Self {
+        match value {
+            Ok(_) => UnitValue::ok(),
+            Err(e) => UnitValue::error(format_error(e)),
+        }
+    }
+}
+
+use marine_sqlite_connector::Error as SqliteError;
+use thiserror::Error as ThisError;
+
+#[derive(ThisError, Debug)]
+pub enum SpellError {
+    #[error("Internal Sqlite error: {0}")]
+    SqliteError(
+        #[from]
+        #[source]
+        SqliteError,
+    ),
+    #[error("Key '{0}' does not exist")]
+    KeyNotExists(String),
+    #[error("Location not available: relay was not set")]
+    NoRelay,
+    #[error("Only owner of the spell can set relay peer id")]
+    SetRelayForbidden,
+    #[error("Relay was already set and cannot be changed")]
+    RelayAlreadySet,
+    #[error("Only owner of the spell can set trigger config")]
+    SetTriggerConfigForbidden,
+    #[error("Trigger Config is not set. Use set_trigger_config to set it.")]
+    NoTriggerConfig,
+}
+
+pub fn format_error(e: impl std::fmt::Debug) -> String {
+    format!("{:?}", e)
+}
+
