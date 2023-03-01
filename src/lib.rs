@@ -304,3 +304,24 @@ fn last_error(raw: ffi::Sqlite3DbHandle) -> Option<Error> {
         })
     }
 }
+
+/// From the SQLite docs:
+///
+/// The sqlite3_soft_heap_limit64() interface sets and/or queries the soft limit on the amount of
+/// heap memory that may be allocated by SQLite. SQLite strives to keep heap memory utilization
+/// below the soft heap limit by reducing the number of pages held in the page cache as heap memory
+/// usages approaches the limit. The soft heap limit is "soft" because even though SQLite strives
+/// to stay below the limit, it will exceed the limit rather than generate an SQLITE_NOMEM error.
+/// In other words, the soft heap limit is advisory only.
+pub fn soft_heap_limit64(limit: i64) -> i64 {
+    unsafe { ffi::sqlite3_hard_heap_limit64(limit) }
+}
+
+/// From the SQLite docs:
+///
+/// This interface sets a hard upper bound of N bytes on the amount of memory that will be
+/// allocated. The set_hard_heap_limit64 interface is similar to soft_heap_limit64
+/// except that memory allocations will fail when the hard heap limit is reached.
+pub fn set_hard_heap_limit64(limit: i64) -> i64 {
+    unsafe { ffi::sqlite3_hard_heap_limit64(limit) }
+}
