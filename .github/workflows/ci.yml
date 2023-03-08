@@ -15,7 +15,7 @@ concurrency:
 jobs:
   tests:
     name: "cargo test"
-    runs-on: builder
+    runs-on: ubuntu-latest
     timeout-minutes: 60
 
     steps:
