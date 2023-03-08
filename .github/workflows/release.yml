@@ -1,0 +1,124 @@
+name: "release"
+
+on:
+  push:
+    branches:
+      - "master"
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref }}"
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+
+    outputs:
+      release-created: ${{ steps.release.outputs['release_created'] }}
+      tag-name: ${{ steps.release.outputs['tag_name'] }}
+      version: ${{ steps.release.outputs['version'] }}
+      pr: ${{ steps.release.outputs['pr'] }}
+
+    steps:
+      - name: Run release-please
+        id: release
+        uses: google-github-actions/release-please-action@v3
+        with:
+          token: ${{ secrets.FLUENCEBOT_RELEASE_PLEASE_PAT }}
+          command: manifest
+          config-file: .github/release-please/config.json
+          manifest-file: .github/release-please/manifest.json
+
+      - name: Show output from release-please
+        if: steps.release.outputs.releases_created
+        env:
+          RELEASE_PLEASE_OUTPUT: ${{ toJSON(steps.release.outputs) }}
+        run: echo "${RELEASE_PLEASE_OUTPUT}" | jq
+
+  publish:
+    if: needs.release-please.outputs.release-created
+    runs-on: builder
+    needs: release-please
+
+    permissions:
+      contents: write
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.FLUENCEBOT_RELEASE_PLEASE_PAT }}
+
+      - name: Import secrets
+        uses: hashicorp/vault-action@v2.4.3
+        with:
+          url: https://vault.fluence.dev
+          path: jwt/github
+          role: ci
+          method: jwt
+          jwtGithubAudience: "https://github.com/fluencelabs"
+          jwtTtl: 300
+          exportToken: false
+          secrets: |
+            kv/crates.io/fluencebot token | CARGO_REGISTRY_TOKEN ;
+
+      - name: Setup Rust toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+
+      - name: Install Marine
+        uses: baptiste0928/cargo-install@v1.3.0
+        with:
+          crate: marine
+
+      - name: Build
+        run: ./build.sh
+
+      - name: Publish to crates.io
+        run: cargo publish
+
+  slack:
+    if: always()
+    name: "Notify"
+    runs-on: ubuntu-latest
+
+    needs:
+      - release-please
+      - publish
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - uses: lwhiteley/dependent-jobs-result-check@v1
+        id: status
+        with:
+          statuses: failure
+          dependencies: ${{ toJSON(needs) }}
+
+      - name: Log output
+        run: |
+          echo "statuses:" "${{ steps.status.outputs.statuses }}"
+          echo "jobs:" "${{ steps.status.outputs.jobs }}"
+          echo "found any?:" "${{ steps.status.outputs.found }}"
+
+      - name: Import secrets
+        uses: hashicorp/vault-action@v2.4.3
+        with:
+          url: https://vault.fluence.dev
+          path: jwt/github
+          role: ci
+          method: jwt
+          jwtGithubAudience: "https://github.com/fluencelabs"
+          jwtTtl: 300
+          exportToken: false
+          secrets: |
+            kv/slack/release-please webhook | SLACK_WEBHOOK_URL
+
+      - uses: ravsamhq/notify-slack-action@v2
+        if: steps.status.outputs.found == 'true'
+        with:
+          status: "failure"
+          notification_title: "*{workflow}* has {status_message}"
+          message_format: "${{ steps.status.outputs.jobs }} {status_message} in <{repo_url}|{repo}>"
+          footer: "<{run_url}>"
