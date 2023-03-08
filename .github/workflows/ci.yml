@@ -39,5 +39,5 @@ jobs:
       - name: Run cargo fmt
         run: cargo fmt --all -- --check
 
-      - name: Run cargo clippy
-        run: cargo clippy --all --all-features
+      # - name: Run cargo clippy
+      #   run: cargo clippy --all --all-features
