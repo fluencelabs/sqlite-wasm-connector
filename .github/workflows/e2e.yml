@@ -16,3 +16,11 @@ jobs:
   tests:
     name: "sqlite-wasm"
     uses: ./.github/workflows/tests.yml
+    with:
+      ref: ${{ github.ref }}
+
+  snapshot:
+    name: "sqlite-wasm"
+    uses: ./.github/workflows/snapshot.yml
+    with:
+      ref: ${{ github.ref }}
