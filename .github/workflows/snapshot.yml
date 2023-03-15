@@ -54,7 +54,7 @@ jobs:
           crate: marine
 
       - name: Download sqlite-wasm
-        continure-on-error: true
+        continue-on-error: true
         uses: actions/download-artifact@v3
         with:
           name: sqlite-wasm
