@@ -1,0 +1,49 @@
+name: Run tests
+
+on:
+  workflow_call:
+    inputs:
+      ref:
+        description: "git ref to checkout to"
+        type: string
+        default: "master"
+
+jobs:
+  tests:
+    name: "cargo test"
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          repository: nahsi/sqlite
+          ref: ${{ inputs.ref }}
+
+      - name: Setup Rust toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+
+      - name: Install marine
+        uses: baptiste0928/cargo-install@v1.3.0
+        with:
+          crate: marine
+
+      - name: Download sqlite-wasm
+        id: wasm
+        uses: actions/download-artifact@v3
+        with:
+          name: sqlite-wasm
+          path: artifacts/
+
+      - name: Build
+        run: ./build.sh
+
+      - name: Run cargo test
+        run: cargo test --release --all-features
+
+      - name: Run cargo fmt
+        run: cargo fmt --all -- --check
+
+      # - name: Run cargo clippy
+      #   run: cargo clippy --all --all-features

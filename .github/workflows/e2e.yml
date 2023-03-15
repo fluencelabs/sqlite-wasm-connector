@@ -1,9 +1,9 @@
-name: "ci"
+name: "e2e"
 
 on:
   pull_request:
     paths-ignore:
-      - "!**.md"
+      - "**.md"
   push:
     branches:
       - "master"
@@ -14,5 +14,5 @@ concurrency:
 
 jobs:
   tests:
-    name: "Run tests"
+    name: "sqlite-wasm"
     uses: ./.github/workflows/tests.yml
