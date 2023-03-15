@@ -3,7 +3,7 @@ name: "ci"
 on:
   pull_request:
     paths-ignore:
-      - "!**.md"
+      - "**.md"
   push:
     branches:
       - "master"
@@ -16,3 +16,5 @@ jobs:
   tests:
     name: "Run tests"
     uses: ./.github/workflows/tests.yml
+    with:
+      ref: ${{ github.ref }}
