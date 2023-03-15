@@ -18,3 +18,17 @@ jobs:
     uses: ./.github/workflows/snapshot.yml
     with:
       ref: ${{ github.ref }}
+
+  registry:
+    needs:
+      - snapshot
+    uses: fluencelabs/registry/.github/workflows/tests.yml@FLU-68
+    with:
+      cargo-dependencies: |
+        [
+          {
+            "package": "marine-sqlite-connector",
+            "version": "=${{ needs.snapshot.outputs.version }}",
+            "registry": "fluence"
+          }
+        ]
