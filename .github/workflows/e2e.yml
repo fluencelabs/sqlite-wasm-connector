@@ -24,6 +24,7 @@ jobs:
       - snapshot
     uses: fluencelabs/registry/.github/workflows/tests.yml@FLU-68
     with:
+      ref: FLU-68
       cargo-dependencies: |
         [
           {
