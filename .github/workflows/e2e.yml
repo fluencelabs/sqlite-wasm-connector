@@ -22,9 +22,8 @@ jobs:
   registry:
     needs:
       - snapshot
-    uses: fluencelabs/registry/.github/workflows/tests.yml@FLU-68
+    uses: fluencelabs/registry/.github/workflows/tests.yml@main
     with:
-      ref: FLU-68
       cargo-dependencies: |
         [
           {
