@@ -55,7 +55,7 @@ jobs:
 
     uses: fluencelabs/rust-peer/.github/workflows/snapshot.yml@master
     with:
-      image-name: "docker.fluence.dev/spell"
+      image-name: "docker.fluence.dev/sqlite-wasm-connector"
       cargo-dependencies: |
         [
           {
