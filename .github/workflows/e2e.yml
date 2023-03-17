@@ -74,6 +74,7 @@ jobs:
     name: "spell"
     needs:
       - rust-peer
-    uses: fluencelabs/spell/.github/workflows/snapshot.yml@FLU-68
+    uses: fluencelabs/spell/.github/workflows/tests.yml@FLU-68
     with:
+      ref: FLU-68
       rust-peer-image: "${{ needs.rust-peer.outputs.rust-peer-image }}"
