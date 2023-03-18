@@ -29,7 +29,6 @@ jobs:
           {
             "package": "marine-sqlite-connector",
             "version": "=${{ needs.snapshot.outputs.version }}",
-            "manifest": "service/Cargo.toml",
             "registry": "fluence"
           }
         ]
