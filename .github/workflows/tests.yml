@@ -29,9 +29,9 @@ jobs:
         continue-on-error: true
         with:
           name: marine
-          path: ${{ env.HOME }}/.local/bin
+          path: ~/.local/bin
 
-      - run: ls -alh ${{ env.HOME }}/.local/bin
+      - run: ls -alh ~/.local/bin
 
       - name: Setup marine
         if: steps.marine.outcome == 'failure'
