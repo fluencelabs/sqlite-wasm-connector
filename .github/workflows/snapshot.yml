@@ -48,15 +48,26 @@ jobs:
       - name: Setup Rust toolchain
         uses: actions-rust-lang/setup-rust-toolchain@v1
 
+      # - name: Download marine artifact
+      #   id: marine
+      #   uses: dawidd6/action-download-artifact@v2
+      #   with:
+      #     name: marine
+      #     path: 
+      #     if_no_artifact_found: ignore
+      #
+      - run: echo $PAHT
+
       - name: Setup marine
         uses: fluencelabs/setup-marine@v1
 
       - name: Download sqlite-wasm
-        continue-on-error: true
-        uses: actions/download-artifact@v3
+        id: artifact
+        uses: dawidd6/action-download-artifact@v2
         with:
           name: sqlite-wasm
           path: artifacts/
+          if_no_artifact_found: ignore
 
       - name: Build
         run: ./build.sh
