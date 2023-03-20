@@ -1,0 +1,74 @@
+name: Publish snapshots
+
+on:
+  workflow_call:
+    inputs:
+      ref:
+        description: "GitHub ref to checkout to"
+        type: string
+        default: "master"
+    outputs:
+      version:
+        description: "snapshot version"
+        value: ${{ jobs.snapshot.outputs.version }}
+
+jobs:
+  snapshot:
+    name: "Publish snapshot"
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    outputs:
+      version: "${{ steps.snapshot.outputs.version }}"
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          repository: fluencelabs/sqlite-wasm-connector
+          ref: ${{ inputs.ref }}
+
+      - name: Import secrets
+        uses: hashicorp/vault-action@v2.5.0
+        with:
+          url: https://vault.fluence.dev
+          path: jwt/github
+          role: ci
+          method: jwt
+          jwtGithubAudience: "https://github.com/fluencelabs"
+          jwtTtl: 300
+          exportToken: false
+          secrets: |
+            kv/cargo-registry/users/ci token | CARGO_REGISTRIES_FLUENCE_TOKEN
+
+      - name: Setup Rust toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+
+      - name: Install marine
+        uses: baptiste0928/cargo-install@v1.3.0
+        with:
+          crate: marine
+
+      - name: Download sqlite-wasm
+        continue-on-error: true
+        uses: actions/download-artifact@v3
+        with:
+          name: sqlite-wasm
+          path: artifacts/
+
+      - name: Build
+        run: ./build.sh
+
+      - name: Generate snapshot version
+        id: version
+        uses: fluencelabs/github-actions/generate-snapshot-id@main
+
+      - name: Publish snapshot
+        id: snapshot
+        uses: fluencelabs/github-actions/cargo-publish-snapshot@main
+        with:
+          id: ${{ steps.version.outputs.id }}
