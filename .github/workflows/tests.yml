@@ -41,6 +41,7 @@ jobs:
         with:
           name: sqlite-wasm
           path: artifacts/
+          if_no_artifact_found: ignore
 
       - name: Build
         run: ./build.sh
