@@ -55,6 +55,8 @@ jobs:
           name: marine
           path: /home/runner/.local/bin
           run_id: ${{ github.run_id }}
+          workflow_conclusion: in_progress
+          check_artifacts: true
           if_no_artifact_found: ignore
 
       - name: Setup marine
@@ -67,6 +69,8 @@ jobs:
           name: sqlite-wasm
           path: artifacts/
           run_id: ${{ github.run_id }}
+          workflow_conclusion: in_progress
+          check_artifacts: true
           if_no_artifact_found: ignore
 
       - name: Build
