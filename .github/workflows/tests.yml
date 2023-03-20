@@ -33,7 +33,7 @@ jobs:
 
       - name: Make marine executable
         if: steps.marine.outcome == 'success'
-        run: chmod +x ${{ steps.marine.outputs.download-path }}
+        run: chmod +x ${{ steps.marine.outputs.download-path }}/marine
 
       - name: Setup marine
         if: steps.marine.outcome == 'failure'
