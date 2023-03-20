@@ -33,7 +33,7 @@ jobs:
            if_no_artifact_found: ignore
 
       - name: Setup marine
-        if: steps.marine.outputs.found_artifact
+        if: ${{ steps.marine.outputs.found_artifact }}
         uses: fluencelabs/setup-marine@v1
 
       - name: Download sqlite-wasm
