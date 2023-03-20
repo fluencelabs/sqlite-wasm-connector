@@ -56,7 +56,7 @@ jobs:
       #     path: 
       #     if_no_artifact_found: ignore
       #
-      - run: echo $PAHT
+      - run: echo $PATH
 
       - name: Setup marine
         uses: fluencelabs/setup-marine@v1
