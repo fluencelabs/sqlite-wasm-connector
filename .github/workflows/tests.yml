@@ -31,7 +31,9 @@ jobs:
           name: marine
           path: ~/.local/bin
 
-      - run: ls -alh ~/.local/bin
+      - name: Make marine executable
+        if: steps.marine.outcome == 'success'
+        run: chmod +x ${{ steps.marine.outputs.download-path }}
 
       - name: Setup marine
         if: steps.marine.outcome == 'failure'
