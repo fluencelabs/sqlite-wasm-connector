@@ -11,7 +11,7 @@ on:
 jobs:
   tests:
     name: "cargo test"
-    runs-on: ubuntu-latest
+    runs-on: builder
     timeout-minutes: 60
 
     steps:
