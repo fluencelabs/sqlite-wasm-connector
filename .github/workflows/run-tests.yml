@@ -21,8 +21,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  tests:
-    name: "Run tests"
+  sqlite-wasm:
     uses: ./.github/workflows/tests.yml
     with:
       ref: ${{ github.ref }}
