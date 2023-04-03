@@ -71,7 +71,7 @@ jobs:
 
   rust-peer-snapshot:
     needs:
-      - rust-peer-snapshot
+      - rust-peer
 
     uses: fluencelabs/rust-peer/.github/workflows/container.yml@master
     with:
@@ -82,7 +82,7 @@ jobs:
   spell-aqua-tests:
     name: "spell"
     needs:
-      - rust-peer
+      - rust-peer-snapshot
     uses: fluencelabs/spell/.github/workflows/tests.yml@main
     with:
       rust-peer-image: "${{ needs.rust-peer-snapshot.outputs.rust-peer-image }}"
