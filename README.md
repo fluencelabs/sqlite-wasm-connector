@@ -1,4 +1,4 @@
-# SQLite [![Package][package-img]][package-url] [![Documentation][documentation-img]][documentation-url] [![Build][build-img]][build-url]
+# SQLite [![Package][package-img]][package-url] [![Documentation][documentation-img]][documentation-url]
 
 The package provides an interface to [SQLite][1].
 
