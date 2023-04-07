@@ -79,8 +79,8 @@ jobs:
         uses: fluencelabs/github-actions/generate-snapshot-id@main
 
       - name: Publish snapshot
-        id: snapshot
         uses: fluencelabs/github-actions/cargo-publish-snapshot@update-cargo-workspace
+        id: snapshot
         with:
           id: ${{ steps.version.outputs.id }}
 
