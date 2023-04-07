@@ -80,7 +80,7 @@ jobs:
 
       - name: Publish snapshot
         id: snapshot
-        uses: fluencelabs/github-actions/cargo-publish-snapshot@update-cargo-workspaces
+        uses: fluencelabs/github-actions/cargo-publish-snapshot@update-cargo-workspace
         with:
           id: ${{ steps.version.outputs.id }}
 
