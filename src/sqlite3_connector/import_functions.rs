@@ -141,4 +141,6 @@ extern "C" {
 
     // sqlite3_int64 sqlite3_hard_heap_limit64(sqlite3_int64 N)
     pub fn sqlite3_hard_heap_limit64(size: i64) -> i64;
+
+    // pub fn sqlite3_status(op: i32, reset_flag: i32) -> i32;
 }

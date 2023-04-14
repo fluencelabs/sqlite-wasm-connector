@@ -222,3 +222,9 @@ pub fn sqlite3_soft_heap_limit64(size: i64) -> i64 {
 pub fn sqlite3_hard_heap_limit64(size: i64) -> i64 {
     <_>::default()
 }
+
+// sqlite3_int64 sqlite3_hard_heap_limit64(sqlite3_int64 N)
+// #[marine]
+// pub fn sqlite3_status(op: i32, resetFlag: i32) -> i32 {
+//     <_>::default()
+// }

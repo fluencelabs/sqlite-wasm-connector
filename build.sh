@@ -11,8 +11,8 @@ cd "$(dirname "$0")"
 marine build --release --bin test
 
 # copy .wasm to artifacts
-rm -f artifacts/*
-mkdir -p artifacts
+#rm -f artifacts/*
+#mkdir -p artifacts
 cp target/wasm32-wasi/release/test.wasm artifacts/
 
 # download SQLite 3 to use in tests

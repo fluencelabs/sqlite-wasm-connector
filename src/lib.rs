@@ -333,3 +333,7 @@ pub fn soft_soft_heap_limit64(limit: i64) -> i64 {
 pub fn set_hard_heap_limit64(limit: i64) -> i64 {
     unsafe { ffi::sqlite3_hard_heap_limit64(limit) }
 }
+
+// pub fn status(op: i32, reset_flag: i32) -> i32 {
+//     unsafe { ffi::sqlite3_status(op, reset_flag) }
+// }

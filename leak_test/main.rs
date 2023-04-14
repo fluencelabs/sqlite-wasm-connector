@@ -5,10 +5,12 @@ use marine_sqlite_connector::State;
 
 mod schema;
 
-use serde::Serialize;
-use serde::Deserialize;
-use schema::db;
 use fstrings::f;
+use schema::db;
+use schema::get_storage;
+use schema::wrapped_try;
+use serde::Deserialize;
+use serde::Serialize;
 
 fn main() {}
 
@@ -19,7 +21,6 @@ pub struct UnitValue {
     pub success: bool,
     pub error: String,
 }
-
 
 #[marine]
 pub fn create_4(path: String) {
@@ -147,7 +148,7 @@ fn insert_3() {
 }
 
 #[marine]
-fn insert_4(key: &str, value: String) {
+fn insert_4(key: &str, value: String, i: u32) {
     let conn = db();
 
     let mut statement = conn
@@ -156,15 +157,50 @@ fn insert_4(key: &str, value: String) {
     statement.bind(1, key).expect("bind 1");
     statement.bind(2, value.as_str()).expect("bind 2");
     statement.next().expect("next");
+    // if i % 10000 == 0 {
+    //     println!(
+    //         "sqlite3 memory_used - {:}",
+    //         marine_sqlite_connector::status(0, 0)
+    //     );
+    //     println!(
+    //         "sqlite3 pagecache_used - {:}",
+    //         marine_sqlite_connector::status(1, 0)
+    //     );
+    // }
 }
 
 #[marine]
 fn insert_5(key: &str, value: String) {
-    let mut statement = db().prepare("INSERT OR REPLACE INTO kv (key, string) VALUES (?, ?)")
+    let mut statement = db()
+        .prepare("INSERT OR REPLACE INTO kv (key, string) VALUES (?, ?)")
         .expect("prep rand 0..3");
     statement.bind(1, key).expect("bind 1");
     statement.bind(2, value.as_str()).expect("bind 2");
     statement.next().expect("next");
+}
+
+#[marine]
+fn insert_6(key: &str, value: String, i: u32) {
+    wrapped_try(|| {
+        let storage = get_storage().unwrap();
+        let mut statement = storage
+            .connection
+            .prepare("INSERT OR REPLACE INTO kv (key, string) VALUES (?, ?)")
+            .expect("prep rand 0..3");
+        statement.bind(1, key).expect("bind 1");
+        statement.bind(2, value.as_str()).expect("bind 2");
+        statement.next().expect("next");
+    });
+    // if i % 10000 == 0 {
+    //     println!(
+    //         "sqlite3 memory_used - {:}",
+    //         marine_sqlite_connector::status(0, 0)
+    //     );
+    //     println!(
+    //         "sqlite3 pagecache_used - {:}",
+    //         marine_sqlite_connector::status(1, 0)
+    //     );
+    // }
 }
 
 /*
@@ -183,8 +219,8 @@ pub fn list_push_string_5(key: &str, value: String) {
  */
 
 #[marine]
-fn select_1(path: String) {
-    let conn = marine_sqlite_connector::open(path).expect("Open database connection");
+fn select_1(i: u32) {
+    let conn = marine_sqlite_connector::open("./tmp/db.sqlite").expect("Open database connection");
 
     let mut statement = conn
         .prepare("SELECT string FROM kv WHERE key = ?")
@@ -194,11 +230,21 @@ fn select_1(path: String) {
     if let State::Row = statement.next().expect("4..5 next") {
         statement.read::<String>(0).expect("4..5 read");
     }
+    // if i % 10000 == 0 {
+    //     println!(
+    //         "sqlite3 memory_used - {:}",
+    //         marine_sqlite_connector::status(0, 0)
+    //     );
+    //     println!(
+    //         "sqlite3 pagecache_used - {:}",
+    //         marine_sqlite_connector::status(1, 0)
+    //     );
+    // }
 }
 
 #[marine]
-fn select_5(path: String) {
-    let conn = marine_sqlite_connector::open(path).expect("Open database connection");
+fn select_5() {
+    let conn = marine_sqlite_connector::open("./tmp/db.sqlite").expect("Open database connection");
 }
 
 #[marine]
@@ -230,7 +276,8 @@ pub fn list_push_string_1(key: &str, value: String) -> UnitValue {
 
 #[marine]
 pub fn list_push_string_2(key: &str, value: String) -> UnitValue {
-        let mut statement = db().prepare(
+    let mut statement = db()
+        .prepare(
             r#"
                 INSERT INTO kv (key, string, list_index)
                     VALUES (
@@ -239,18 +286,20 @@ pub fn list_push_string_2(key: &str, value: String) -> UnitValue {
                         42
                     )
             "#,
-        ).unwrap();
-        statement.bind(1, key).unwrap();
-        statement.bind(2, value.as_str()).unwrap();
-        statement.next().unwrap();
+        )
+        .unwrap();
+    statement.bind(1, key).unwrap();
+    statement.bind(2, value.as_str()).unwrap();
+    statement.next().unwrap();
 
     UnitValue::ok()
 }
 
 #[marine]
 pub fn list_push_string_3(key: &str, value: String) {
-    let mut statement = db().prepare(
-        r#"
+    let mut statement = db()
+        .prepare(
+            r#"
                 INSERT INTO kv (key, string, list_index)
                     VALUES (
                         ?,
@@ -258,7 +307,8 @@ pub fn list_push_string_3(key: &str, value: String) {
                         42
                     )
             "#,
-    ).unwrap();
+        )
+        .unwrap();
     statement.bind(1, key).unwrap();
     statement.bind(2, value.as_str()).unwrap();
     statement.next().unwrap();
@@ -266,15 +316,17 @@ pub fn list_push_string_3(key: &str, value: String) {
 
 #[marine]
 pub fn list_push_string_4(key: &str, value: String) {
-    let mut statement = db().prepare(
-        r#"
+    let mut statement = db()
+        .prepare(
+            r#"
                 INSERT INTO kv (key, string)
                     VALUES (
                         ?,
                         ?
                     )
             "#,
-    ).unwrap();
+        )
+        .unwrap();
     statement.bind(1, key).unwrap();
     statement.bind(2, value.as_str()).unwrap();
     statement.next().unwrap();
@@ -282,12 +334,14 @@ pub fn list_push_string_4(key: &str, value: String) {
 
 #[marine]
 pub fn list_push_string_5(key: &str, value: String) {
-    let mut statement = db().prepare(
-        r#"
+    let mut statement = db()
+        .prepare(
+            r#"
                 INSERT INTO kv (key, string)
                     VALUES (?, ?)
             "#,
-    ).unwrap();
+        )
+        .unwrap();
     statement.bind(1, key).unwrap();
     statement.bind(2, value.as_str()).unwrap();
     statement.next().unwrap();
@@ -295,12 +349,14 @@ pub fn list_push_string_5(key: &str, value: String) {
 
 #[marine]
 pub fn list_push_string_6(key: &str, value: String) {
-    let mut statement = db().prepare(
-        r#"
+    let mut statement = db()
+        .prepare(
+            r#"
                 INSERT OR REPLACE INTO kv (key, string)
                     VALUES (?,?)
             "#,
-    ).unwrap();
+        )
+        .unwrap();
     statement.bind(1, key).unwrap();
     statement.bind(2, value.as_str()).unwrap();
     statement.next().unwrap();
@@ -363,4 +419,3 @@ pub enum SpellError {
 pub fn format_error(e: impl std::fmt::Debug) -> String {
     format!("{:?}", e)
 }
-

@@ -1,9 +1,31 @@
 use fstrings::f;
 use fstrings::format_args_f;
 use marine_sqlite_connector::Connection;
+use marine_sqlite_connector::Result as SQLiteResult;
 
 pub const DEFAULT_MAX_ERR_PARTICLES: usize = 50;
 pub const DB_FILE: &'static str = "/tmp/db-5.sqlite";
+
+#[derive(Debug)]
+pub struct RegistryResult {
+    pub success: bool,
+    pub error: String,
+}
+
+pub fn wrapped_try<F, T>(func: F) -> T
+where
+    F: FnOnce() -> T,
+{
+    func()
+}
+
+pub struct Storage {
+    pub(crate) connection: Connection,
+}
+
+pub fn get_storage() -> SQLiteResult<Storage> {
+    marine_sqlite_connector::open("./tmp/db.sqlite").map(|c| Storage { connection: c })
+}
 
 pub fn db() -> Connection {
     // use rand::prelude::*;
@@ -17,8 +39,7 @@ pub fn db() -> Connection {
 }
 
 pub fn create() {
-    db().execute(
-        f!(r#"
+    db().execute(f!(r#"
             CREATE TABLE IF NOT EXISTS kv (
                 key TEXT NOT NULL,
                 string TEXT,
@@ -26,7 +47,6 @@ pub fn create() {
 
                 PRIMARY KEY(key, list_index)
             );
-            "#),
-    )
+            "#))
         .expect("init sqlite db");
 }
