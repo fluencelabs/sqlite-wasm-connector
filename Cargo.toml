@@ -40,5 +40,5 @@ marine-rs-sdk = "0.7.1"
 bytesize = "1.1.0"
 
 [dev-dependencies]
-marine-rs-sdk-test = "0.2.0"
+marine-rs-sdk-test = "0.9.1"
 temporary = "0.6"
