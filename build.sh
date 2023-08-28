@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-SQLITE_WASM_VERSION="v0.18.0_w"
+SQLITE_WASM_VERSION="v0.18.1"
 
 set -o errexit -o nounset -o pipefail
 
@@ -17,5 +17,5 @@ cp target/wasm32-wasi/release/test.wasm artifacts/
 
 # download SQLite 3 to use in tests
 if [[ ! -f artifacts/sqlite3.wasm ]]; then
-  curl -L https://github.com/fluencelabs/sqlite/releases/download/${SQLITE_WASM_VERSION}/sqlite3.wasm -o artifacts/sqlite3.wasm
+  curl -L https://github.com/fluencelabs/sqlite/releases/download/sqlite-wasm-${SQLITE_WASM_VERSION}/sqlite3.wasm -o artifacts/sqlite3.wasm
 fi
