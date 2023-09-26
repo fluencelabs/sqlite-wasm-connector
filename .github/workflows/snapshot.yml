@@ -7,6 +7,10 @@ on:
         description: "GitHub ref to checkout to"
         type: string
         default: "master"
+      cargo-dependencies:
+        description: "Cargo dependencies map"
+        type: string
+        default: "null"
     outputs:
       version:
         description: "snapshot version"
@@ -56,6 +60,12 @@ jobs:
           # so save cache only on merge to master
           # to use less space and speed up CI
           save-if: ${{ github.event_name == 'push' }}
+
+      - name: Set dependencies
+        if: inputs.cargo-dependencies != 'null'
+        uses: fluencelabs/github-actions/cargo-set-dependency@main
+        with:
+          dependencies: ${{ inputs.cargo-dependencies }}
 
       - name: Setup marine
         uses: fluencelabs/setup-marine@v1
