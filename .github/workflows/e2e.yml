@@ -52,7 +52,7 @@ jobs:
   decider:
     needs:
       - spell
-    uses: fluencelabs/decider/.github/workflows/snapshot.yml@FLU-477
+    uses: fluencelabs/decider/.github/workflows/snapshot.yml@main
     with:
       cargo-dependencies: |
         [
