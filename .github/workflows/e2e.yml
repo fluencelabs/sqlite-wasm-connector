@@ -68,7 +68,7 @@ jobs:
       - spell
       - decider
 
-    uses: fluencelabs/nox/.github/workflows/build.yml@debug-spell-dtos-override
+    uses: fluencelabs/nox/.github/workflows/build.yml@master
     with:
       cargo-dependencies: |
         [
