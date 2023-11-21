@@ -97,7 +97,6 @@ jobs:
     uses: fluencelabs/nox/.github/workflows/container.yml@master
     with:
       image-name: "docker.fluence.dev/sqlite-wasm-connector"
-      flavour: "minimal"
 
   spell-aqua-tests:
     name: "spell"
