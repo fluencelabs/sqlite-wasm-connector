@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-SQLITE_WASM_VERSION="v0.18.1"
+SQLITE_WASM_VERSION="v0.18.2"
 
 set -o errexit -o nounset -o pipefail
 
