@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.3](https://github.com/fluencelabs/sqlite-wasm-connector/compare/marine-sqlite-connector-v0.9.2...marine-sqlite-connector-v0.9.3) (2023-12-26)
+
+
+### Features
+
+* **update:** wasm sqlite 0.18.2 ([#50](https://github.com/fluencelabs/sqlite-wasm-connector/issues/50)) ([b0971a6](https://github.com/fluencelabs/sqlite-wasm-connector/commit/b0971a6a5a6eae97995ef99686c739c11ec0af97))
+
 ## [0.9.2](https://github.com/fluencelabs/sqlite-wasm-connector/compare/marine-sqlite-connector-v0.9.1...marine-sqlite-connector-v0.9.2) (2023-12-19)
 
 
