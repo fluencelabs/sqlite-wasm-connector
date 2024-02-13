@@ -28,7 +28,7 @@ pub struct DBExecDescriptor {
 }
 
 #[marine]
-#[host_imports]
+#[host_import]
 extern "C" {
     /*
      SQLITE_API int sqlite3_open_v2(
