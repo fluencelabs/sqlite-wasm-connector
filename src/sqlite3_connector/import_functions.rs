@@ -28,7 +28,7 @@ pub struct DBExecDescriptor {
 }
 
 #[marine]
-#[link(wasm_import_module = "sqlite3")]
+#[host_imports]
 extern "C" {
     /*
      SQLITE_API int sqlite3_open_v2(
