@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.10.0](https://github.com/fluencelabs/sqlite-wasm-connector/compare/marine-sqlite-connector-v0.9.4...marine-sqlite-connector-v0.10.0) (2024-02-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** update rust crate marine-rs-sdk to 0.12.0 ([#54](https://github.com/fluencelabs/sqlite-wasm-connector/issues/54))
+
+### Bug Fixes
+
+* **deps:** update rust crate marine-rs-sdk to 0.12.0 ([#54](https://github.com/fluencelabs/sqlite-wasm-connector/issues/54)) ([a613613](https://github.com/fluencelabs/sqlite-wasm-connector/commit/a613613e4e0f28393ca53c3111e1c07463bdf277))
+
 ## [0.9.4](https://github.com/fluencelabs/sqlite-wasm-connector/compare/marine-sqlite-connector-v0.9.3...marine-sqlite-connector-v0.9.4) (2023-12-29)
 
 
